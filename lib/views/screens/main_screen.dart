@@ -49,22 +49,18 @@ class _MainScreenState extends State<MainScreen> {
       );
 
   _filterView() {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-      TextButton(
-        style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-        ),
-        onPressed: () { },
-        child: const Text('Start'),
-      ),
-      TextButton(
-        style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-        ),
-        onPressed: () { },
-        child: const Text('End'),
-      )
-    ],);
+    return BlocBuilder<ChartCubit, ChartState>(
+        buildWhen: (previous, current) {
+          return current is ChartLoadSuccess;
+        },
+        builder: (context, state) =>
+        state is ChartLoadSuccess
+            ? Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          _startButton(state),
+          _endButton(state),
+        ],)
+            : Container())
+    ;
   }
 
   _chartView() {
@@ -83,5 +79,41 @@ class _MainScreenState extends State<MainScreen> {
 
   _getChart({Period? period}) {
     _chartCubit.getChartData(period: period);
+  }
+
+  _startButton(ChartLoadSuccess state) {
+    return ElevatedButton(
+      onPressed: () => _selectStartDate(state.period),
+      child: const Text('Start'),
+    );
+  }
+
+  Future<void> _selectStartDate(Period period) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: period.start,
+        lastDate: period.end, firstDate: Period.minDate);
+    if (picked != null && picked != period.start) {
+      period.start = picked;
+      _getChart(period: period);
+    }
+  }
+
+  _endButton(ChartLoadSuccess state) {
+    return ElevatedButton(
+      onPressed: () => _selectEndDate(state.period),
+      child: const Text('End'),
+    );
+  }
+
+  Future<void> _selectEndDate(Period period) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: period.end,
+        lastDate: Period.maxDate, firstDate: period.start);
+    if (picked != null && picked != period.end) {
+      period.end = picked;
+      _getChart(period: period);
+    }
   }
 }

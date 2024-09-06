@@ -6,14 +6,21 @@ import 'package:tech_challenge/data/repositories/chart_repos.dart';
 
 class ChartCubit extends Cubit<ChartState> {
   final BaseChartRepository chartRepository;
+  List<ChartData>? chartDataList;
+
   ChartCubit({required this.chartRepository}) : super(ChartInitial());
 
   getChartData({Period? period}) async {
     try {
-      period ??= Period(DateTime.utc(2020), DateTime.now());
+      period ??= Period(Period.minDate, Period.maxDate);
       emit(ChartLoadInProgress());
-      List<ChartData> newChartDataList = await chartRepository.getChartData(period);
-      emit(ChartLoadSuccess(chartData: newChartDataList,period: period));
+      chartDataList ??= await chartRepository.getChartData(period);
+      List<ChartData> newChartDataList = chartDataList!
+          .where((element) =>
+              period!.start.compareTo(element.timestamp) <= 0 &&
+              period.end.compareTo(element.timestamp) >= 0)
+          .toList();
+      emit(ChartLoadSuccess(chartData: newChartDataList, period: period));
     } catch (e) {
       emit(ChartFailure(e.toString()));
     }

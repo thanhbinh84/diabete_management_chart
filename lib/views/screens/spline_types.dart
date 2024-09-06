@@ -39,7 +39,7 @@ class _SplineTypesState extends State<SplineTypes> {
       primaryXAxis: DateTimeAxis(
         majorGridLines: const MajorGridLines(width: 0),
         dateFormat: DateFormat('d MMM'),
-        intervalType: DateTimeIntervalType.hours,
+        intervalType: DateTimeIntervalType.days,
       ),
       primaryYAxis: NumericAxis(
           labelFormat: '{value}',

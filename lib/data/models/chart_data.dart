@@ -1,3 +1,4 @@
+
 class ChartData {
   double value = 0;
   DateTime timestamp = DateTime.now();

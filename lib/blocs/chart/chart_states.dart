@@ -1,40 +1,32 @@
 import 'package:equatable/equatable.dart';
+import 'package:tech_challenge/common/enums.dart';
 import 'package:tech_challenge/data/models/period.dart';
 import 'package:tech_challenge/data/models/chart_data.dart';
 
-abstract class ChartState extends Equatable {
-  final List<Object?>? objProps;
-  const ChartState([this.objProps]);
+class ChartState extends Equatable {
+  const ChartState({required this.chartDataList, required this.period, required this.dataStatus});
 
-  @override
-  List<Object?> get props => objProps ?? [];
-}
-
-class ChartInitial extends ChartState {
-  @override
-  String toString() => 'ChartInitial';
-}
-
-class ChartLoadInProgress extends ChartState {
-  @override
-  String toString() => 'ChartLoadInProgress';
-}
-
-class ChartLoadSuccess extends ChartState {
-  final List<ChartData> chartData;
+  final List<ChartData> chartDataList;
+  final DataLoadStatus dataStatus;
   final Period period;
 
-  ChartLoadSuccess({required this.chartData,  required this.period}) : super([chartData, period]);
+  ChartState.initial()
+      : this(
+            chartDataList: [],
+            dataStatus: DataLoadStatus.initial,
+            period: Period(Period.minDate, Period.maxDate));
+
+  ChartState copyWith({
+    List<ChartData>? chartDataList,
+    DataLoadStatus? dataStatus,
+    Period? period,
+  }) {
+    return ChartState(
+        chartDataList: chartDataList ?? this.chartDataList,
+        period: period ?? this.period,
+        dataStatus: dataStatus ?? this.dataStatus);
+  }
 
   @override
-  String toString() => 'ChartLoaded';
+  List<Object> get props => [chartDataList, period, dataStatus];
 }
-
-class ChartFailure extends ChartState {
-  final String error;
-  ChartFailure(this.error) : super([error]);
-
-  @override
-  String toString() => 'ChartFailure $error';
-}
-

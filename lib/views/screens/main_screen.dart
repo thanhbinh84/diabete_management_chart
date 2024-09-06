@@ -1,5 +1,6 @@
 import 'package:tech_challenge/blocs/chart/chart_cubit.dart';
 import 'package:tech_challenge/blocs/chart/chart_states.dart';
+import 'package:tech_challenge/common/enums.dart';
 import 'package:tech_challenge/views/screens/spline_types.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
@@ -31,48 +32,42 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return BlocListener<ChartCubit, ChartState>(
         listener: (context, state) {
-          if (state is ChartFailure) Utils.errorToast(state.error);
+          if (state.dataStatus == DataLoadStatus.failure) Utils.errorToast("Something went wrong");
         },
         child: Scaffold(
           body: _mainView(),
         ));
   }
 
-  _mainView() =>
-      SafeArea(
+  _mainView() => SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(18.0),
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [_filterView(), const Divider(), Expanded(child: _chartView())]),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            _filterView(),
+            const Divider(),
+            Expanded(child: _chartView()),
+            _minMaxView()
+          ]),
         ),
       );
 
   _filterView() {
     return BlocBuilder<ChartCubit, ChartState>(
-        buildWhen: (previous, current) {
-          return current is ChartLoadSuccess;
-        },
-        builder: (context, state) =>
-        state is ChartLoadSuccess
-            ? Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          _startButton(state),
-          _endButton(state),
-        ],)
-            : Container())
-    ;
+        builder: (context, state) => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _startButton(state),
+                _endButton(state),
+              ],
+            ));
   }
 
   _chartView() {
     return BlocBuilder<ChartCubit, ChartState>(
       builder: (context, state) {
-        return state is ChartLoadInProgress
-            ? SpinKitWave(color: Theme
-            .of(context)
-            .primaryColor, size: 25.0)
-            : state is ChartLoadSuccess
-            ? SplineTypes(state.chartData, state.period)
-            : Container();
+        return state.dataStatus == DataLoadStatus.loading
+            ? SpinKitWave(color: Theme.of(context).primaryColor, size: 25.0)
+            : SplineTypes(state.chartDataList, state.period);
       },
     );
   }
@@ -81,7 +76,7 @@ class _MainScreenState extends State<MainScreen> {
     _chartCubit.getChartData(period: period);
   }
 
-  _startButton(ChartLoadSuccess state) {
+  _startButton(ChartState state) {
     return ElevatedButton(
       onPressed: () => _selectStartDate(state.period),
       child: const Text('Start'),
@@ -92,14 +87,15 @@ class _MainScreenState extends State<MainScreen> {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: period.start,
-        lastDate: period.end, firstDate: Period.minDate);
+        lastDate: period.end,
+        firstDate: Period.minDate);
     if (picked != null && picked != period.start) {
       period.start = picked;
       _getChart(period: period);
     }
   }
 
-  _endButton(ChartLoadSuccess state) {
+  _endButton(ChartState state) {
     return ElevatedButton(
       onPressed: () => _selectEndDate(state.period),
       child: const Text('End'),
@@ -110,10 +106,23 @@ class _MainScreenState extends State<MainScreen> {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: period.end,
-        lastDate: Period.maxDate, firstDate: period.start);
+        lastDate: Period.maxDate,
+        firstDate: period.start);
     if (picked != null && picked != period.end) {
       period.end = picked;
       _getChart(period: period);
     }
+  }
+
+  _minMaxView() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        ElevatedButton(
+          onPressed: () => print("Min"),
+          child: const Text('Minimum'),
+        ),
+      ],
+    );
   }
 }

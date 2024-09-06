@@ -8,6 +8,7 @@ import 'package:tech_challenge/data/repositories/chart_repos.dart';
 
 class ChartCubit extends Cubit<ChartState> {
   final BaseChartRepository chartRepository;
+  List<ChartData> cachedChartDataList = [];
 
   ChartCubit({required this.chartRepository}) : super(ChartState.initial());
 
@@ -15,16 +16,15 @@ class ChartCubit extends Cubit<ChartState> {
     try {
       period ??= state.period;
       emit(state.copyWith(dataStatus: DataLoadStatus.loading));
-      List<ChartData> chartDataList = state.chartDataList;
-      if (chartDataList.isEmpty) {
-        chartDataList = await chartRepository.getChartData(period);
+      if (cachedChartDataList.isEmpty) {
+        cachedChartDataList = await chartRepository.getChartData(period);
       }
-      List<ChartData> newChartDataList = chartDataList
+      List<ChartData> filteredChartDataList = cachedChartDataList
           .where((element) =>
               period!.start.compareTo(element.timestamp) <= 0 &&
               period.end.compareTo(element.timestamp) >= 0)
           .toList();
-      emit(state.copyWith(chartDataList: newChartDataList, period: period, dataStatus: DataLoadStatus.success));
+      emit(state.copyWith(chartDataList: filteredChartDataList, period: period, dataStatus: DataLoadStatus.success));
     } catch (e) {
       emit(state.copyWith(dataStatus: DataLoadStatus.failure));
     }

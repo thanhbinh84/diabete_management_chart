@@ -46,7 +46,8 @@ class _MainScreenState extends State<MainScreen> {
             _filterView(),
             const Divider(),
             Expanded(child: _chartView()),
-            _minMaxView()
+            _minMaxView(),
+            _avgMedView()
           ]),
         ),
       );
@@ -118,11 +119,26 @@ class _MainScreenState extends State<MainScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        ElevatedButton(
-          onPressed: () => print("Min"),
-          child: const Text('Minimum'),
-        ),
+        _criteriaButton(Criteria.min),
+        _criteriaButton(Criteria.max),
       ],
+    );
+  }
+
+  _avgMedView() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _criteriaButton(Criteria.avg),
+        _criteriaButton(Criteria.med),
+      ],
+    );
+  }
+
+  _criteriaButton(Criteria criteria) {
+    return ElevatedButton(
+      onPressed: () => _chartCubit.showValue(criteria),
+      child: Text(criteria.name),
     );
   }
 }

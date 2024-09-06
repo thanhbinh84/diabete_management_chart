@@ -6,6 +6,8 @@ A new Flutter project.
 
 `flutter run -t lib/views/root/main.dart`
 
+`flutter test --update-goldens`
+
 ### Project structure 
 
 - Data [Handle data]
@@ -17,3 +19,8 @@ A new Flutter project.
   - Screens
 
 - Blocs [Business controller]
+
+### Screen record 
+
+https://github.com/user-attachments/assets/1f8980b6-e3bb-44b4-9e80-e1ecde12a112
+

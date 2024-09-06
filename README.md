@@ -17,3 +17,8 @@ A new Flutter project.
   - Screens
 
 - Blocs [Business controller]
+
+### Screen record 
+
+https://github.com/user-attachments/assets/1f8980b6-e3bb-44b4-9e80-e1ecde12a112
+

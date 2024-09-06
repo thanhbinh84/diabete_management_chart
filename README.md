@@ -5,6 +5,7 @@ A new Flutter project.
 ### How to run
 
 `flutter run -t lib/views/root/main.dart`
+`flutter test --update-goldens`
 
 ### Project structure 
 

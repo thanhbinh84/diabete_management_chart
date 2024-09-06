@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:tech_challenge/data/models/period.dart';
 import 'package:tech_challenge/data/services/api.dart';
 
-const periodLength = 7;
+const mockChartDataList = 2;
 
 class MockAPI extends BaseAPI {
   @override

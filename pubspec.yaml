@@ -43,6 +43,10 @@ dependencies:
   dio: ^4.0.0
 
 dev_dependencies:
+  golden_toolkit: ^0.10.0
+  bloc_test: ^8.0.0
+  mockito: ^5.0.5
+  build_runner: ^2.0.0
   flutter_test:
     sdk: flutter
 

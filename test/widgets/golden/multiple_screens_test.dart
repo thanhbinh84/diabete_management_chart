@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:tech_challenge/blocs/chart/chart_cubit.dart';
 import 'package:tech_challenge/data/repositories/chart_repos.dart';
@@ -17,13 +18,12 @@ Widget makeWidgetTestable({required Widget child}) {
         ),
       ],
           child: MaterialApp(
-                    debugShowCheckedModeBanner: false,
-                    home: child,
-                    onGenerateRoute: (_) =>
-                        PageRouteBuilder(pageBuilder: (context, animation, secondaryAnimation) {
-                          return const Text('mock page');
-                        }))));
-
+              debugShowCheckedModeBanner: false,
+              home: child,
+              onGenerateRoute: (_) =>
+                  PageRouteBuilder(pageBuilder: (context, animation, secondaryAnimation) {
+                    return const Text('mock page');
+                  }))));
 }
 
 void main() {
@@ -38,6 +38,18 @@ void main() {
       ..addScenario(
         widget: makeWidgetTestable(child: const MainScreen()),
         name: 'Chart screen',
+      )
+      ..addScenario(
+        widget: makeWidgetTestable(child: const MainScreen()),
+        name: 'Click start date',
+        onCreate: (scenarioWidgetKey) async {
+          final finder = find.descendant(
+            of: find.byKey(scenarioWidgetKey),
+            matching: find.text('Start'),
+          );
+          expect(finder, findsOneWidget);
+          await tester.tap(finder);
+        },
       );
 
     await tester.pumpDeviceBuilder(builder);

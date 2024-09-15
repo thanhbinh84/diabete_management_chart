@@ -2,7 +2,6 @@ import 'package:tech_challenge/blocs/chart/chart_cubit.dart';
 import 'package:tech_challenge/blocs/chart/chart_states.dart';
 import 'package:tech_challenge/common/enums.dart';
 import 'package:tech_challenge/views/screens/spline_types.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -15,7 +14,7 @@ class MainScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _MainScreenState createState() => _MainScreenState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
@@ -32,7 +31,9 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return BlocListener<ChartCubit, ChartState>(
         listener: (context, state) {
-          if (state.dataStatus == DataLoadStatus.failure) Utils.errorToast("Something went wrong");
+          if (state.dataStatus == DataStatus.failure) {
+            Utils.errorToast("Something went wrong");
+          }
         },
         child: Scaffold(
           body: _mainView(),
@@ -58,6 +59,9 @@ class _MainScreenState extends State<MainScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _startButton(state),
+                const SizedBox(
+                  width: 20,
+                ),
                 _endButton(state),
               ],
             ));
@@ -66,7 +70,7 @@ class _MainScreenState extends State<MainScreen> {
   _chartView() {
     return BlocBuilder<ChartCubit, ChartState>(
       builder: (context, state) {
-        return state.dataStatus == DataLoadStatus.loading
+        return state.dataStatus == DataStatus.loading
             ? SpinKitWave(color: Theme.of(context).primaryColor, size: 25.0)
             : SplineTypes(state.chartDataList, state.period);
       },
@@ -78,9 +82,11 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   _startButton(ChartState state) {
-    return ElevatedButton(
-      onPressed: () => _selectStartDate(state.period),
-      child: const Text('Start'),
+    return Expanded(
+      child: ElevatedButton(
+        onPressed: () => _selectStartDate(state.period),
+        child: const Text('Start'),
+      ),
     );
   }
 
@@ -88,7 +94,7 @@ class _MainScreenState extends State<MainScreen> {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: period.start,
-        lastDate: period.end,
+        lastDate: period.end.subtract(const Duration(days: 1)),
         firstDate: Period.minDate);
     if (picked != null && picked != period.start) {
       period.start = picked;
@@ -97,9 +103,11 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   _endButton(ChartState state) {
-    return ElevatedButton(
-      onPressed: () => _selectEndDate(state.period),
-      child: const Text('End'),
+    return Expanded(
+      child: ElevatedButton(
+        onPressed: () => _selectEndDate(state.period),
+        child: const Text('End'),
+      ),
     );
   }
 
@@ -108,7 +116,7 @@ class _MainScreenState extends State<MainScreen> {
         context: context,
         initialDate: period.end,
         lastDate: Period.maxDate,
-        firstDate: period.start);
+        firstDate: period.start.add(const Duration(days: 1)));
     if (picked != null && picked != period.end) {
       period.end = picked;
       _getChart(period: period);
@@ -120,6 +128,9 @@ class _MainScreenState extends State<MainScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _criteriaButton(Criteria.min),
+        const SizedBox(
+          width: 20,
+        ),
         _criteriaButton(Criteria.max),
       ],
     );
@@ -130,15 +141,23 @@ class _MainScreenState extends State<MainScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _criteriaButton(Criteria.avg),
+        const SizedBox(
+          width: 20,
+        ),
         _criteriaButton(Criteria.med),
       ],
     );
   }
 
   _criteriaButton(Criteria criteria) {
-    return ElevatedButton(
-      onPressed: () => _chartCubit.showValue(criteria),
-      child: Text(criteria.name),
+    return Expanded(
+      child: ElevatedButton(
+        onPressed: () {
+          _chartCubit.showValue(criteria);
+          // Navigator.pushNamed(context, ScreenRouter.secondScreen);
+        },
+        child: Text(criteria.name),
+      ),
     );
   }
 }

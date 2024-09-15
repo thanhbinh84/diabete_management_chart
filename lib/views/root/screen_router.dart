@@ -5,9 +5,11 @@ import 'package:tech_challenge/data/repositories/chart_repos.dart';
 import 'package:tech_challenge/data/services/api.dart';
 import 'package:tech_challenge/data/services/mocks/mock_api.dart';
 import 'package:tech_challenge/views/screens/main_screen.dart';
+import 'package:tech_challenge/views/screens/second_screen.dart';
 
 class ScreenRouter {
   static const root = '/';
+  static const secondScreen = 'Second Screen';
 
   late ChartRepository chartRepository;
   late BaseAPI api;
@@ -24,6 +26,8 @@ class ScreenRouter {
     switch (settings.name) {
       case root:
         return route(const MainScreen());
+      case secondScreen:
+        return route(const SecondScreen());
       default:
         return unknownRoute(settings);
     }

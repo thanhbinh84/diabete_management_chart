@@ -5,7 +5,7 @@ class Utils {
   static toast(dynamic str) {
     Fluttertoast.showToast(
         msg: str.toString(),
-        toastLength: Toast.LENGTH_LONG,
+        toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         fontSize: 15.0);
   }

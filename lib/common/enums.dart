@@ -1,4 +1,4 @@
-enum DataLoadStatus { initial, loading, success, failure }
+enum DataStatus { initial, loading, success, failure }
 
 class Criteria {
   final String name;

@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tech_challenge/blocs/chart/chart_cubit.dart';
+import 'package:tech_challenge/blocs/chart/chart_states.dart';
+import 'package:tech_challenge/common/enums.dart';
+import 'package:tech_challenge/common/utils.dart';
 import 'package:tech_challenge/data/models/chart_data.dart';
 import 'package:tech_challenge/data/models/period.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
 
 class SplineTypes extends StatefulWidget {
-  final List<ChartData> chartData;
+  final List<ChartData> chartDataList;
   final Period period;
 
-  const SplineTypes(this.chartData, this.period, {super.key});
+  const SplineTypes(this.chartDataList, this.period, {super.key});
 
   @override
-  _SplineTypesState createState() => _SplineTypesState();
+  State<SplineTypes> createState() => _SplineTypesState();
 }
 
 class _SplineTypesState extends State<SplineTypes> {
@@ -23,13 +29,26 @@ class _SplineTypesState extends State<SplineTypes> {
   @override
   void initState() {
     _spline = SplineType.natural;
-    _tooltipBehavior = TooltipBehavior(enable: true, header: '', canShowMarker: false);
+    _tooltipBehavior =
+        TooltipBehavior(enable: true, header: '', canShowMarker: true, duration: 20000);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return _buildTypesSplineChart();
+    return BlocListener<ChartCubit, ChartState>(
+        listener: (context, state) {
+          if (state.dataStatus == DataStatus.success) {
+            ChartData? chartData = state.selectedChartData;
+            if (chartData != null && state.criteria != null) {
+              Utils.toast('${state.criteria!.name}: ${chartData.value} - ${chartData.timestamp}');
+              SchedulerBinding.instance.addPostFrameCallback((_) {
+                _tooltipBehavior.show(chartData.timestamp, chartData.value);
+              });
+            }
+          }
+        },
+        child: _buildTypesSplineChart());
   }
 
   /// Returns the spline types chart.
@@ -38,12 +57,11 @@ class _SplineTypesState extends State<SplineTypes> {
       plotAreaBorderWidth: 0,
       primaryXAxis: DateTimeAxis(
         majorGridLines: const MajorGridLines(width: 0),
-        dateFormat: DateFormat('d MMM'),
-        intervalType: DateTimeIntervalType.days,
+        dateFormat: DateFormat("d MMM"),
+        intervalType: DateTimeIntervalType.auto,
       ),
-      primaryYAxis: NumericAxis(
-          labelFormat: '{value}',
-          majorTickLines: const MajorTickLines(size: 0)),
+      primaryYAxis:
+          NumericAxis(labelFormat: '{value}', majorTickLines: const MajorTickLines(size: 0)),
       series: _getSplineTypesSeries(),
       tooltipBehavior: _tooltipBehavior,
     );
@@ -54,9 +72,12 @@ class _SplineTypesState extends State<SplineTypes> {
     return <SplineSeries<ChartData, DateTime>>[
       SplineSeries<ChartData, DateTime>(
           splineType: _spline,
-          dataSource: widget.chartData,
-          xValueMapper: (ChartData sales, _) => sales.timestamp,
-          yValueMapper: (ChartData sales, _) => sales.value,
+          dataSource: widget.chartDataList,
+          xValueMapper: (ChartData data, _) => data.timestamp,
+          yValueMapper: (ChartData data, _) => data.value,
+          markerSettings: const MarkerSettings(
+              isVisible: false
+          ),
           width: 2)
     ];
   }

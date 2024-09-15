@@ -13,4 +13,9 @@ class ChartData {
     value = double.parse(map[keyValue]);
     timestamp = DateTime.parse(map[keyTimestamp]);
   }
+
+  @override
+  String toString() {
+    return "$timestamp-$value";
+  }
 }

@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tech_challenge/views/root/routes.dart';
@@ -38,8 +37,5 @@ class SimpleBlocObserver extends BlocObserver {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = SimpleBlocObserver();
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: Routes(),
-  ));
+  runApp(const Routes());
 }

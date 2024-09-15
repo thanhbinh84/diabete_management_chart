@@ -1,16 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tech_challenge/blocs/chart/chart_states.dart';
+import 'package:tech_challenge/blocs/theme/theme_states.dart';
 import 'package:tech_challenge/common/enums.dart';
 import 'package:tech_challenge/data/models/chart_data.dart';
 import 'package:tech_challenge/data/models/period.dart';
 import 'package:tech_challenge/data/repositories/chart_repos.dart';
 
 
-class ChartCubit extends Cubit<ChartState> {
+class ChartCubit extends Cubit<ThemeState> {
   final BaseChartRepository chartRepository;
   List<ChartData> cachedChartDataList = [];
 
-  ChartCubit({required this.chartRepository}) : super(ChartState.initial());
+  ChartCubit({required this.chartRepository}) : super(ThemeState.initial());
 
   getChartData({Period? period}) async {
     try {

@@ -24,7 +24,7 @@ A base Flutter project follows MVVM pattern by using Get library.
 
 - app
   - main app
-  - bootrap 
+  - bootstrap 
   - routes 
 - chart [feature] 
   - model

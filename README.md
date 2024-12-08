@@ -1,6 +1,6 @@
 # Flutter app template with Get library 
 
-A base Flutter project which is using Get library to separates into three layers.
+A base Flutter project follows MVVM pattern by using Get library.
 
 ### How to run
 

@@ -1,6 +1,6 @@
-# tech_challenge
+# Flutter app template with Get library 
 
-A new Flutter project.
+A base Flutter project which is using Get library to separates into three layers.
 
 ### How to run
 

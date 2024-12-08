@@ -8,7 +8,6 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
 
 class SplineChartWidget extends StatefulWidget {
-
   const SplineChartWidget({super.key});
 
   @override
@@ -17,6 +16,7 @@ class SplineChartWidget extends StatefulWidget {
 
 class _SplineChartWidgetState extends State<SplineChartWidget> {
   final ChartController _chartController = ChartController.to;
+
   _SplineChartWidgetState();
 
   late SplineType _spline;
@@ -39,7 +39,7 @@ class _SplineChartWidgetState extends State<SplineChartWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return _buildTypesSplineChart();
+    return Obx(() => _buildTypesSplineChart());
   }
 
   /// Returns the spline types chart.
@@ -66,9 +66,7 @@ class _SplineChartWidgetState extends State<SplineChartWidget> {
           dataSource: _chartController.chartDataList.value,
           xValueMapper: (ChartData data, _) => data.timestamp,
           yValueMapper: (ChartData data, _) => data.value,
-          markerSettings: const MarkerSettings(
-              isVisible: false
-          ),
+          markerSettings: const MarkerSettings(isVisible: false),
           width: 2)
     ];
   }

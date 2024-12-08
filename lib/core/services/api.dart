@@ -1,6 +1,6 @@
 
 import 'package:dio/dio.dart';
-import 'package:tech_challenge/data/models/period.dart';
+import 'package:tech_challenge/chart/models/period.dart';
 
 abstract class BaseAPI {
   Future<Response> getChartData(Period period);

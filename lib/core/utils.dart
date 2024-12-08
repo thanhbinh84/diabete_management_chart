@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -19,4 +20,11 @@ class Utils {
         textColor: Colors.white,
         fontSize: 13.0);
   }
+
+  handleError(dynamic e, {StackTrace? s, String? description, bool shouldToast = false}) async {
+    String msg = e is DioException ? e.message??'Unknown Dio Exception' : e.toString();
+    if (shouldToast) toast(msg);
+  }
 }
+
+final utils = Utils();

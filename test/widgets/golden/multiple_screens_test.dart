@@ -5,7 +5,7 @@ import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:tech_challenge/blocs/chart/chart_cubit.dart';
 import 'package:tech_challenge/data/repositories/chart_repos.dart';
 import 'package:tech_challenge/data/services/mocks/mock_api.dart';
-import 'package:tech_challenge/views/screens/main_screen.dart';
+import 'package:tech_challenge/chart/chart_screen.dart';
 
 Widget makeWidgetTestable({required Widget child}) {
   return MaterialApp(
@@ -36,11 +36,11 @@ void main() {
         Device.tabletLandscape,
       ])
       ..addScenario(
-        widget: makeWidgetTestable(child: const MainScreen()),
+        widget: makeWidgetTestable(child: const ChartScreen()),
         name: 'Chart screen',
       )
       ..addScenario(
-        widget: makeWidgetTestable(child: const MainScreen()),
+        widget: makeWidgetTestable(child: const ChartScreen()),
         name: 'Click start date',
         onCreate: (scenarioWidgetKey) async {
           final finder = find.descendant(

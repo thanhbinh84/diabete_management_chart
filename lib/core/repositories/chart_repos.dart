@@ -1,15 +1,16 @@
 import 'package:dio/dio.dart';
-import 'package:tech_challenge/data/models/period.dart';
-import 'package:tech_challenge/data/models/chart_data.dart';
-import 'package:tech_challenge/data/services/api.dart';
+import 'package:get/get_core/get_core.dart';
+import 'package:get/get_instance/get_instance.dart';
+import 'package:tech_challenge/chart/models/chart_data.dart';
+import 'package:tech_challenge/chart/models/period.dart';
+import 'package:tech_challenge/core/services/api.dart';
 
 abstract class BaseChartRepository {
   Future<List<ChartData>> getChartData(Period period);
 }
 
 class ChartRepository extends BaseChartRepository {
-  final BaseAPI api;
-  ChartRepository({required this.api});
+  final API api = Get.find<API>();
 
   @override
   Future<List<ChartData>> getChartData(Period period) async {

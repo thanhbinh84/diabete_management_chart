@@ -1,9 +1,8 @@
-
 class ChartData {
   double value = 0;
   DateTime timestamp = DateTime.now();
 
-  ChartData(this.timestamp, this.value);
+  ChartData({DateTime? time, this.value = 0}) : timestamp = time ?? DateTime.now();
 
   static const keyRoot = 'bloodGlucoseSamples';
   static const keyValue = 'value';

@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:tech_challenge/data/models/period.dart';
-import 'package:tech_challenge/data/services/api.dart';
+import 'package:tech_challenge/chart/models/period.dart';
+import 'package:tech_challenge/core/services/api.dart';
 
 const mockChartDataList = 4;
 

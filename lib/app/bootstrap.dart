@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tech_challenge/app/app.dart';
 import 'package:tech_challenge/chart/chart_controller.dart';
-import 'package:tech_challenge/core/repositories/chart_repos.dart';
-import 'package:tech_challenge/core/services/api.dart';
+import 'package:tech_challenge/core/repository/chart_repos.dart';
+import 'package:tech_challenge/core/service/api.dart';
 import 'package:tech_challenge/core/utils.dart';
 
 void bootstrap() async {

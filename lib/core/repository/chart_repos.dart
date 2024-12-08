@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_instance/get_instance.dart';
-import 'package:tech_challenge/chart/models/chart_data.dart';
-import 'package:tech_challenge/chart/models/period.dart';
-import 'package:tech_challenge/core/services/api.dart';
+import 'package:tech_challenge/chart/model/chart_data.dart';
+import 'package:tech_challenge/chart/model/period.dart';
+import 'package:tech_challenge/core/service/api.dart';
 
 abstract class BaseChartRepository {
   Future<List<ChartData>> getChartData(Period period);

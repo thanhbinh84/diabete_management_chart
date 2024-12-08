@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:tech_challenge/chart/chart_controller.dart';
-import 'package:tech_challenge/chart/models/chart_data.dart';
+import 'package:tech_challenge/chart/model/chart_data.dart';
 import 'package:tech_challenge/core/utils.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
@@ -39,7 +39,7 @@ class _SplineChartWidgetState extends State<SplineChartWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => _buildTypesSplineChart());
+    return _buildTypesSplineChart();
   }
 
   /// Returns the spline types chart.

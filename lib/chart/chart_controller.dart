@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:tech_challenge/chart/models/chart_data.dart';
-import 'package:tech_challenge/chart/models/period.dart';
+import 'package:tech_challenge/chart/model/chart_data.dart';
+import 'package:tech_challenge/chart/model/period.dart';
 import 'package:tech_challenge/core/controller/base_controller.dart';
 import 'package:tech_challenge/core/enums.dart';
-import 'package:tech_challenge/core/repositories/chart_repos.dart';
+import 'package:tech_challenge/core/repository/chart_repos.dart';
 
 class ChartController extends BaseController {
   static ChartController get to => Get.find();

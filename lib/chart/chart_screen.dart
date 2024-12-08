@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tech_challenge/chart/chart_controller.dart';
-import 'package:tech_challenge/chart/models/period.dart';
+import 'package:tech_challenge/chart/model/period.dart';
 import 'package:tech_challenge/chart/spline_chart_widget.dart';
 import 'package:tech_challenge/core/enums.dart';
 import 'package:tech_challenge/core/widget/base_screen.dart';

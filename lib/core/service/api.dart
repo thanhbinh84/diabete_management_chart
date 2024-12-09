@@ -22,7 +22,7 @@ class API extends BaseAPI {
   }
 
   @override
-  Future<Response> getChartData(Period period) async {
+  Future<Response> getChartData(Period? period) async {
     return await _dio.get("/sample.json");
   }
 }

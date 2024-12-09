@@ -13,7 +13,7 @@ class ChartRepository extends BaseChartRepository {
   final API api = Get.find<API>();
 
   @override
-  Future<List<ChartData>> getChartData(Period period) async {
+  Future<List<ChartData>> getChartData(Period? period) async {
     Response response = await api.getChartData(period);
     List<ChartData> list = (response.data[ChartData.keyRoot] as List)
         .map<ChartData>((e) => ChartData.fromJson(e))

@@ -14,6 +14,12 @@ class ChartController extends BaseController {
   final selectedChartData = ChartData().obs;
   final criteria = Criteria.min.obs;
 
+  @override
+  void onInit() {
+    super.onInit();
+    getChartData();
+  }
+
   getChartData({Period? period}) async {
     loading();
     try {

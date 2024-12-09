@@ -1,36 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tech_challenge/chart/chart_controller.dart';
 import 'package:tech_challenge/chart/model/period.dart';
 import 'package:tech_challenge/chart/spline_chart_widget.dart';
 import 'package:tech_challenge/core/enums.dart';
 import 'package:tech_challenge/core/widget/base_screen.dart';
 
-class ChartScreen extends StatefulWidget {
-  const ChartScreen({
-    super.key,
-  });
+class ChartScreen extends GetView<ChartController> {
+  const ChartScreen({super.key});
 
-  @override
-  State<ChartScreen> createState() => _ChartScreenState();
-}
-
-class _ChartScreenState extends State<ChartScreen> {
-  final ChartController _chartController = ChartController.to;
-
-  @override
-  void initState() {
-    _getChart();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return BaseScreen(
-      controller: _chartController,
+      controller: controller,
       Padding(
         padding: const EdgeInsets.all(18.0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          _filterView(),
+          _filterView(context),
           const Divider(),
           Expanded(child: _chartView()),
           _minMaxView(),
@@ -40,15 +27,15 @@ class _ChartScreenState extends State<ChartScreen> {
     );
   }
 
-  _filterView() {
+  _filterView(context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _startButton(),
+        _startButton(context),
         const SizedBox(
           width: 20,
         ),
-        _endButton(),
+        _endButton(context),
       ],
     );
   }
@@ -58,20 +45,20 @@ class _ChartScreenState extends State<ChartScreen> {
   }
 
   _getChart({Period? period}) {
-    _chartController.getChartData(period: period);
+    controller.getChartData(period: period);
   }
 
-  _startButton() {
+  _startButton(context) {
     return Expanded(
       child: ElevatedButton(
-        onPressed: () => _selectStartDate(),
+        onPressed: () => _selectStartDate(context),
         child: const Text('Start'),
       ),
     );
   }
 
-  Future<void> _selectStartDate() async {
-    Period period = _chartController.period.value;
+  Future<void> _selectStartDate(context) async {
+    Period period = controller.period.value;
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: period.start,
@@ -83,17 +70,17 @@ class _ChartScreenState extends State<ChartScreen> {
     }
   }
 
-  _endButton() {
+  _endButton(context) {
     return Expanded(
       child: ElevatedButton(
-        onPressed: () => _selectEndDate(),
+        onPressed: () => _selectEndDate(context),
         child: const Text('End'),
       ),
     );
   }
 
-  Future<void> _selectEndDate() async {
-    Period period = _chartController.period.value;
+  Future<void> _selectEndDate(context) async {
+    Period period = controller.period.value;
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: period.end,
@@ -135,7 +122,7 @@ class _ChartScreenState extends State<ChartScreen> {
     return Expanded(
       child: ElevatedButton(
         onPressed: () {
-          _chartController.showValue(criteria);
+          controller.showValue(criteria);
           // Navigator.pushNamed(context, ScreenRouter.secondScreen);
         },
         child: Text(criteria.name),
